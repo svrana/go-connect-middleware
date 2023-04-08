@@ -2,7 +2,7 @@
 
 This repository holds [connect Go](https://github.com/bufbuild/connect-go) Middlewares: interceptors, helpers and utilities.
 
-This is a derived work of [go gRPC middleware](https://github.com/grpc-ecosystem/go-grpc-middleware).
+This is a derived work of [go gRPC middleware](https://github.com/grpc-ecosystem/go-grpc-middleware), specifically the v2 branch.
 
 ## Interceptors
 

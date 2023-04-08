@@ -35,17 +35,31 @@ func (c *reporter) PostCall(err error, duration time.Duration) {
 		err = nil
 	}
 
-	code := c.opts.codeFunc(err)
 	fields := c.fields.WithUnique(ExtractFields(c.ctx))
-	fields = fields.AppendUnique(Fields{"connect.code", code.String()})
+
+	var level Level
+	if err != nil {
+		code := c.opts.codeFunc(err)
+		fields = fields.AppendUnique(Fields{"connect.code", code.String()})
+		level = c.opts.levelFunc(code)
+	} else {
+		level = LevelInfo
+	}
 	if err != nil {
 		fields = fields.AppendUnique(Fields{"connect.error", fmt.Sprintf("%v", err)})
 	}
-	c.logger.Log(c.ctx, c.opts.levelFunc(code), "finished call", fields.AppendUnique(c.opts.durationFieldFunc(duration))...)
+	c.logger.Log(c.ctx, level, "finished call", fields.AppendUnique(c.opts.durationFieldFunc(duration))...)
+}
+
+func (c *reporter) errorToLevel(err error) Level {
+	if err != nil {
+		return c.opts.levelFunc(c.opts.codeFunc(err))
+	}
+	return LevelInfo
 }
 
 func (c *reporter) PostMsgSend(res connect.AnyResponse, err error, duration time.Duration) {
-	logLvl := c.opts.levelFunc(c.opts.codeFunc(err))
+	logLvl := c.errorToLevel(err)
 	fields := c.fields.WithUnique(ExtractFields(c.ctx))
 	if err != nil {
 		fields = fields.AppendUnique(Fields{"connect.error", fmt.Sprintf("%v", err)})
@@ -68,7 +82,12 @@ func (c *reporter) PostMsgSend(res connect.AnyResponse, err error, duration time
 }
 
 func (c *reporter) PostMsgReceive(req connect.AnyRequest, err error, duration time.Duration) {
-	logLvl := c.opts.levelFunc(c.opts.codeFunc(err))
+	var logLvl Level
+	if err != nil {
+		logLvl = c.opts.levelFunc(c.opts.codeFunc(err))
+	} else {
+		logLvl = LevelInfo
+	}
 	fields := c.fields.WithUnique(ExtractFields(c.ctx))
 	if err != nil {
 		fields = fields.AppendUnique(Fields{"connect.error", fmt.Sprintf("%v", err)})

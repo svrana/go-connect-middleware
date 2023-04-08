@@ -34,7 +34,7 @@ func newCommonFields(kind string, c interceptors.CallMeta) Fields {
 		ComponentFieldKey, kind,
 		ServiceFieldKey, c.Service,
 		MethodFieldKey, c.Method,
-		MethodTypeFieldKey, string(c.Typ),
+		MethodTypeFieldKey, string(c.Typ), // FIXME
 	}
 }
 
@@ -144,8 +144,8 @@ func ExtractFields(ctx context.Context) Fields {
 
 // InjectFields allows adding fields to any existing Fields that will be used by the logging interceptor.
 // For explicitness, in case of duplicates, first field occurrence wins (immutability of fields). This also
-// applies to all fields created by logging middleware. It uses labels from this context as a base, so fields like "grpc.service"
-// can be overridden if your you add custom middleware that injects "grpc.service" before logging middleware injects those.
+// applies to all fields created by logging middleware. It uses labels from this context as a base, so fields like "connect.service"
+// can be overridden if your you add custom middleware that injects "connect.service" before logging middleware injects those.
 // Don't overuse overriding to avoid surprises.
 func InjectFields(ctx context.Context, f Fields) context.Context {
 	return context.WithValue(ctx, fieldsCtxMarkerKey, ExtractFields(ctx).WithUnique(f))

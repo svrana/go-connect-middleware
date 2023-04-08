@@ -1,6 +1,6 @@
 # Go Connect Middleware
 
-This reports holds [connect Go](https://github.com/bufbuild/connect-go) Middlewares: interceptors, helpers and utilities.
+This repository holds [connect Go](https://github.com/bufbuild/connect-go) Middlewares: interceptors, helpers and utilities.
 
 This is a derived work of [go gRPC middleware](https://github.com/grpc-ecosystem/go-grpc-middleware).
 
@@ -8,7 +8,7 @@ This is a derived work of [go gRPC middleware](https://github.com/grpc-ecosystem
 
 #### Observability
 
-- Logging with [`github.com/svrana/go-connect-middleware//interceptors/logging`](interceptors/logging) - a customizable logging middleware offering extended per request logging. It requires logging adapter, see examples in [`interceptors/logging/examples`](interceptors/logging/examples) for `go-kit`, `log`, `logr`, `logrus`, `slog`, `zap` and `zerolog`.
+- Logging with [`github.com/svrana/go-connect-middleware/interceptors/logging`](interceptors/logging) - a customizable logging middleware offering extended per request logging. It requires a logging adapter, see examples in [`interceptors/logging/examples`](interceptors/logging/examples) for `zap`
   (Only unary server interceptor for now)
 
 ## Prerequisites

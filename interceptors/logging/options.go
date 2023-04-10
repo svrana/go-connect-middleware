@@ -171,13 +171,13 @@ var DefaultDurationToFields = DurationToTimeMillisFields
 
 // DurationToTimeMillisFields converts the duration to milliseconds and uses the key `grpc.time_ms`.
 func DurationToTimeMillisFields(duration time.Duration) Fields {
-	return Fields{"grpc.time_ms", fmt.Sprintf("%v", durationToMilliseconds(duration))}
+	return Fields{"time_ms", fmt.Sprintf("%v", durationToMilliseconds(duration))}
 }
 
 // DurationToDurationField uses a Duration field to log the request duration
 // and leaves it up to Log's encoder settings to determine how that is output.
 func DurationToDurationField(duration time.Duration) Fields {
-	return Fields{"grpc.duration", duration.String()}
+	return Fields{"duration", duration.String()}
 }
 
 func durationToMilliseconds(duration time.Duration) float32 {

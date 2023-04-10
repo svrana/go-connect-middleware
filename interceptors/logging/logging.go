@@ -11,14 +11,14 @@ import (
 
 var (
 	// SystemTag is tag representing an event inside gRPC call.
-	SystemTag = []string{"protocol", "connect"}
+	//SystemTag = []string{"protocol", "connect"}
 	// ComponentFieldKey is a tag representing the client/server that is calling.
-	ComponentFieldKey    = "connect.component"
+	ComponentFieldKey    = "component"
 	KindServerFieldValue = "server"
 	KindClientFieldValue = "client"
-	ServiceFieldKey      = "connect.service"
-	MethodFieldKey       = "connect.method"
-	MethodTypeFieldKey   = "connect.method_type"
+	ServiceFieldKey      = "service"
+	MethodFieldKey       = "method"
+	MethodTypeFieldKey   = "method_type"
 )
 
 type fieldsCtxMarker struct{}
@@ -30,11 +30,11 @@ var (
 
 func newCommonFields(kind string, c interceptors.CallMeta) Fields {
 	return Fields{
-		SystemTag[0], SystemTag[1],
+		//SystemTag[0], SystemTag[1],
 		ComponentFieldKey, kind,
 		ServiceFieldKey, c.Service,
 		MethodFieldKey, c.Method,
-		MethodTypeFieldKey, string(c.Typ), // FIXME
+		//MethodTypeFieldKey, strconv.Itoa(int(c.Typ)),
 	}
 }
 

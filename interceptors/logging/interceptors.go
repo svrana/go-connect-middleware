@@ -40,13 +40,13 @@ func (c *reporter) PostCall(err error, duration time.Duration) {
 	var level Level
 	if err != nil {
 		code := c.opts.codeFunc(err)
-		fields = fields.AppendUnique(Fields{"connect.code", code.String()})
+		fields = fields.AppendUnique(Fields{"code", code.String()})
 		level = c.opts.levelFunc(code)
 	} else {
 		level = LevelInfo
 	}
 	if err != nil {
-		fields = fields.AppendUnique(Fields{"connect.error", fmt.Sprintf("%v", err)})
+		fields = fields.AppendUnique(Fields{"error", fmt.Sprintf("%v", err)})
 	}
 	c.logger.Log(c.ctx, level, "finished call", fields.AppendUnique(c.opts.durationFieldFunc(duration))...)
 }
@@ -62,7 +62,7 @@ func (c *reporter) PostMsgSend(res connect.AnyResponse, err error, duration time
 	logLvl := c.errorToLevel(err)
 	fields := c.fields.WithUnique(ExtractFields(c.ctx))
 	if err != nil {
-		fields = fields.AppendUnique(Fields{"connect.error", fmt.Sprintf("%v", err)})
+		fields = fields.AppendUnique(Fields{"error", fmt.Sprintf("%v", err)})
 	}
 	if !c.startCallLogged && has(c.opts.loggableEvents, StartCall) {
 		c.startCallLogged = true
@@ -73,10 +73,10 @@ func (c *reporter) PostMsgSend(res connect.AnyResponse, err error, duration time
 		return
 	}
 	if c.CallMeta.IsClient {
-		fields = fields.AppendUnique(Fields{"connect.send.duration", duration.String(), "connect.request.content", res})
+		fields = fields.AppendUnique(Fields{"send.duration", duration.String(), "request.content", res})
 		c.logger.Log(c.ctx, logLvl, "request sent", fields...)
 	} else {
-		fields = fields.AppendUnique(Fields{"connect.send.duration", duration.String(), "connect.response.content", res})
+		fields = fields.AppendUnique(Fields{"send.duration", duration.String(), "response.content", res})
 		c.logger.Log(c.ctx, logLvl, "response sent", fields...)
 	}
 }
@@ -90,7 +90,7 @@ func (c *reporter) PostMsgReceive(req connect.AnyRequest, err error, duration ti
 	}
 	fields := c.fields.WithUnique(ExtractFields(c.ctx))
 	if err != nil {
-		fields = fields.AppendUnique(Fields{"connect.error", fmt.Sprintf("%v", err)})
+		fields = fields.AppendUnique(Fields{"error", fmt.Sprintf("%v", err)})
 	}
 	if !c.startCallLogged && has(c.opts.loggableEvents, StartCall) {
 		c.startCallLogged = true
@@ -101,10 +101,10 @@ func (c *reporter) PostMsgReceive(req connect.AnyRequest, err error, duration ti
 		return
 	}
 	if !c.CallMeta.IsClient {
-		fields = fields.AppendUnique(Fields{"connect.recv.duration", duration.String(), "connect.request.content", req})
+		fields = fields.AppendUnique(Fields{"recv.duration", duration.String(), "request.content", req})
 		c.logger.Log(c.ctx, logLvl, "request received", fields...)
 	} else {
-		fields = fields.AppendUnique(Fields{"connect.recv.duration", duration.String(), "connect.response.content", req})
+		fields = fields.AppendUnique(Fields{"recv.duration", duration.String(), "response.content", req})
 		c.logger.Log(c.ctx, logLvl, "response received", fields...)
 	}
 }
@@ -127,9 +127,9 @@ func reportable(logger Logger, opts *options) interceptors.CommonReportableFunc 
 			fields = fields.AppendUnique(opts.fieldsFromCtxFn(ctx))
 		}
 
-		singleUseFields := Fields{"connect.start_time", time.Now().Format(opts.timestampFormat)}
+		singleUseFields := Fields{"start_time", time.Now().Format(opts.timestampFormat)}
 		if d, ok := ctx.Deadline(); ok {
-			singleUseFields = singleUseFields.AppendUnique(Fields{"connect.request.deadline", d.Format(opts.timestampFormat)})
+			singleUseFields = singleUseFields.AppendUnique(Fields{"request.deadline", d.Format(opts.timestampFormat)})
 		}
 		return &reporter{
 			CallMeta:        c,

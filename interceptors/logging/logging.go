@@ -34,7 +34,7 @@ func newCommonFields(kind string, c interceptors.CallMeta) Fields {
 		ComponentFieldKey, kind,
 		ServiceFieldKey, c.Service,
 		MethodFieldKey, c.Method,
-		//MethodTypeFieldKey, strconv.Itoa(int(c.Typ)),
+		MethodTypeFieldKey, c.Typ,
 	}
 }
 

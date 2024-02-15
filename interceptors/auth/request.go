@@ -7,7 +7,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/bufbuild/connect-go"
+	"connectrpc.com/connect"
 )
 
 var (

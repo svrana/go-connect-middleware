@@ -9,7 +9,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/bufbuild/connect-go"
+	"connectrpc.com/connect"
 	"google.golang.org/grpc/peer"
 
 	"github.com/svrana/go-connect-middleware/interceptors"

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bufbuild/connect-go"
+	"connectrpc.com/connect"
 )
 
 // LoggableEvent defines the events a log line can be added on.

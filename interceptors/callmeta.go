@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bufbuild/connect-go"
+	"connectrpc.com/connect"
 )
 
 func splitFullMethodName(fullMethod string) (string, string) {
